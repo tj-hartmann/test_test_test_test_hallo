@@ -28,3 +28,12 @@ Liest genau eine Wetter-Messung
 - Stadtname ist nicht leer
 - Uhrzeit nach Regeln von parse_time (siehe oben)
 - Temperatur in Fliesskommazahl --> wenn nicht moeglich Value Error
+
+## filter_by_temperature(measurements, lower, upper)
+Gibt alle Messungen zurueck der Temperaturen im gewuenschtem Bereich
+- Grenzen sind inklusiv
+- Rheinfolge der Messungen bleibt erhalten
+- doppelte und identische Messungen bleiben erhalten
+- uebergebene Liste nicht veraendern
+- lower > upper -> ValueError
+- Ergebnis ist eine Liste

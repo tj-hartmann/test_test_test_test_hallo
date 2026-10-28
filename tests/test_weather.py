@@ -71,15 +71,59 @@ def test_parse_measurement_regular_line():
     assert parse_measurement("Bergen;2:30;-8.7") == ("Bergen", 150, -8.7)
     assert parse_measurement("Dublin;19:27;4.8") == ("Dublin", 1167, 4.8)
 
+# filter_by_temperature(measurements, lower, upper)
+def test_filter_by_temperature_irregular_boundries():
+    with pytest.raises(ValueError, match="lower must not be greater than upper."):
+        irish_measurements = [
+            ("Londonderry", 640, 2.0),
+            ("Cork", 1190, 16.5),
+            ("Galway", 480, 8.3)
+        ]
+
+        filter_by_temperature(irish_measurements, 24, 0)
+        filter_by_temperature(irish_measurements, 11, 11)
+        
+def test_filter_by_temperature_returns_list():
+    scotish_measurements = [
+        ("Edinburgh", 583, 12.0),
+        ("Glasgow", 1297, 11.5),
+        ("Aberdeen", 975, 9.1)
+    ]
+
+    assert isinstance(filter_by_temperature(scotish_measurements, 10, 15), list)
+
+def test_filter_by_temperature_includes_boundries():
+    english_measurements = [
+        ("Newcastel", 777, 9.3),
+        ("Manchester", 1397, 10.0),
+        ("London", 435, 15.0)
+    ]
+
+    assert filter_by_temperature(english_measurements, 10, 15) == [
+        ("Manchester", 1397, 10.0),
+        ("London", 435, 15.0)
+    ]
+    
+def test_filter_by_temperature_same_order():
+    welsh_measurements = [
+        ("Cardiff", 566, 8.4),
+        ("Swansea", 933, 7.2),
+        ("Newport", 570, 8.4)
+    ]
+
+    assert filter_by_temperature(welsh_measurements, 8.0, 12.5) == [
+        ("Cardiff", 566, 8.4),
+        ("Newport", 570, 8.4)    
+    ]
 
 def test_filter_by_temperature_regular_values():
-    measurements = [
+    nrw_measurements = [
         ("Köln", 600, 10.0),
         ("Düsseldorf", 720, 18.5),
         ("Bonn", 900, 25.0),
     ]
 
-    assert filter_by_temperature(measurements, 15.0, 20.0) == [
+    assert filter_by_temperature(nrw_measurements, 15.0, 20.0) == [
         ("Düsseldorf", 720, 18.5)
     ]
 
