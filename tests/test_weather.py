@@ -14,24 +14,24 @@ from weather import (
 import pytest
 # parse_time(time_text)
 def test_parse_time_irregular_input():
-    with pytest.raises(ValueError, mark="Time must have HH:MM format."):
+    with pytest.raises(ValueError, match="Time must have HH:MM format."):
         parse_time('1245')
         parse_time('13:22:43')
         parse_time('7:')
 
 def test_parse_time_not_a_digit():
-    with pytest.raises(ValueError, mark="Hour and minute must be numeric."):
+    with pytest.raises(ValueError, match="Hour and minute must be numeric."):
         parse_time('HH:MM')
         parse_time('12:Uhr')
         parse_time('8:4.6')
 
 def test_parse_hour_out_of_bound():
-    with pytest.raises(ValueError, mark="Hour must be between 0 and 23."):
+    with pytest.raises(ValueError, match="Hour must be between 0 and 23."):
         parse_time('35:33')
         parse_time('-2:02')
 
 def test_parse_minutes_out_of_bound():
-    with pytest.raises(ValueError, mark="Minute must be between 0 and 59."):
+    with pytest.raises(ValueError, match="Minute must be between 0 and 59."):
         parse_time('12:65')
         parse_time('3:777')
 
@@ -42,9 +42,34 @@ def test_parse_time_regular_time():
     assert parse_time("09:02") == 542
     assert parse_time("9:20") == 560
 
+# parse_measurement(line)
+def test_parse_measurement_irregular_input():
+    with pytest.raises(ValueError, match="Measurement must be a string."):
+        parse_measurement(True)
+        parse_measurement(10101000010010)
+        parse_measurement(["Horsthausen;20:31;6.6"])
+
+def test_parse_measurement_irregular_format():
+    with pytest.raises(ValueError, match="Expected exactly three fields."):
+        parse_measurement("Ostpreussen;Kalinigrad;4:47;-10.4")
+        parse_measurement("Prag;33.6")
+        parse_measurement("Stockholm|20:31|6.6")
+        parse_measurement("Trondheim 19:02 -4.0")
+
+def test_parse_measurement_empty_city():
+    with pytest.raises(ValueError, match="City must not be empty."):
+        parse_measurement("   ; 7:44 ; 8.8")
+        parse_measurement("       ;15:15;   -1.2  ")
+
+def test_parse_measurement_temperature_to_float():
+    with pytest.raises(ValueError, match="Temperature must be numeric."):
+        parse_measurement("Helsinki;14:56; sehr kalt")
+        parse_measurement("Oslo;21:11;True")
 
 def test_parse_measurement_regular_line():
     assert parse_measurement("Köln;14:21;21.7") == ("Köln", 861, 21.7)
+    assert parse_measurement("Bergen;2:30;-8.7") == ("Bergen", 150, -8.7)
+    assert parse_measurement("Dublin;19:27;4.8") == ("Dublin", 1167, 4.8)
 
 
 def test_filter_by_temperature_regular_values():

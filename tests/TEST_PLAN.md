@@ -20,3 +20,11 @@ Konvertiert Uhrzeit mit einem Doppelpunkt in Minuten seit Mitternacht
 - Stunde zwischen 0 und 23
 - Minuten zwischen 0 und 59
 - bei ungueltigem Format -> ValueError
+
+## parse_measurement(line)
+Liest genau eine Wetter-Messung
+- line muss String sein -> sonst Value Error
+- fuehrende/nachfolgende Leerzeichen werden entfernt
+- Stadtname ist nicht leer
+- Uhrzeit nach Regeln von parse_time (siehe oben)
+- Temperatur in Fliesskommazahl --> wenn nicht moeglich Value Error
