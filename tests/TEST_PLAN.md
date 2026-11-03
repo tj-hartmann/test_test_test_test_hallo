@@ -43,3 +43,11 @@ Berechnet die mittlere Temperatur aller Messungen einer Stadt
 - Stadtname muss exakt sein; case sensitiv
 - keine Messung fuer die angegebene Stadt -> ValueError
 - Mittelwert ueber passende Messungen + Eingabedaten unveraendert
+
+## hottest_measurement(measurements)
+Gibt die Messung mit der hoechsten Temperatur zurueck
+- eindeutige hoechste Temperature -> zurueckgabe
+- mehrere Messungen mit selber hoechsten Temperature -> rueckgabe von Temperatur mt fruehster Uhrzeit
+- mehrere Messung mit hoechster Temperature und gleicher Uhrzeit -> zuerst vorkommende Messung wird zurueckgegeben
+- leere Sequenz -> ValueError
+- Daten bleiben unveraendert

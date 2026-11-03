@@ -193,6 +193,11 @@ def test_average_temperature_regular_values():
     assert average_temperature(sefrance_measurements, "Carcassonne") == 23.2
     assert average_temperature(sefrance_measurements, "Perpignan") == 27.0
 
+def test_hottest_measurement_with_empty_sequence():
+    with pytest.raises(ValueError, match="No measurements available"):
+        mars_measurements = []
+        hottest_measurement(mars_measurements)
+
 def test_hottest_measurement_with_unique_maximum():
     measurements = [
         ("Köln", 600, 10.0),
@@ -201,3 +206,27 @@ def test_hottest_measurement_with_unique_maximum():
     ]
 
     assert hottest_measurement(measurements) == ("Düsseldorf", 720, 25.0)
+
+def test_hottest_measurement_with_multiple_maxima_unique_time():
+    sfrance_measurements = [
+        ("Montpellier", 693, 24.0)
+        ("Marseille", 992, 27.4)
+        ("Avignon", 1004, 26.2)
+        ("Aix-en-Provence", 1423, 25.3)
+        ("Cannes", 1294, 27.4)
+    ]
+    
+    assert hottest_measurement(sfrance_measurements) == ("Marseille", 992, 27.4)
+
+def test_hottest_measurement_with_multiple_maxima_same_time():
+    efrance_measurements = [
+        ("Grenoble", 15, 4.8)
+        ("Lyon", 994, 18.2)
+        ("Annecy", 734, 12.3)
+        ("Dijon", 840, 18.5)
+        ("Strasbourg", 126, 11.0)
+        ("Metz", 840, 18.5)
+        ("Reims", 1433, 9.4)
+    ]
+
+    assert hottest_measurement(efrance_measurements) == ("Dijon", 840, 18.5)
