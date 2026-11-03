@@ -127,6 +127,50 @@ def test_filter_by_temperature_regular_values():
         ("Düsseldorf", 720, 18.5)
     ]
 
+    nefrance_measurements = [
+        ("Lille", 12, 8.3)
+        ("Le Havre", 34, 9.7)
+        ("Calais", 39, 7.3)
+        ("Dunkirk", 57, 10.1)
+        ("Paris", 63, 11.5)
+        ("Caen", 88, 7.0)
+        ("Rouen", 91, 6.8)
+    ]
+
+    assert filter_by_temperature(nefrance_measurements, 7.0, 10.0) == [
+        ("Lille", 12, 8.3)
+        ("Le Havre", 34, 9.7)
+        ("Calais", 39, 7.3)
+        ("Caen", 88, 7.0)
+    ] 
+
+def test_average_temperature_no_messurements():
+    with pytest.raises(ValueError, match="No measurements found for city."):
+        nwfrance_measurements = [
+            ("Rennes", 456, 30.4)
+            ("Rennes", 897, 28.5)
+            ("Brest", 902, 26.8)
+            ("Lorient", 1184, 21.9)
+            ("Lorient", 754, 26.0)
+        ]
+        average_temperature(nwfrance_measurements, "Saint Malo")
+        average_temperature(nwfrance_measurements, "Quimper")
+        average_temperature(nwfrance_measurements, "rennes")
+        average_temperature(nwfrance_measurements, "Breste")
+
+def test_average_temperature_case_sensitive():
+    efrance_measurements = [
+        ("Nantes", 1230, 17.3)
+        ("La Rochelle", 1198, 15.0)
+        ("Les Sables-d'Olonne", 1054, 18.2)
+        ("LaRochelle", 978, 18.5)
+        ("Bordeaux", 822, 25.9)
+        ("Les Sables dOlonne", 793, 19.9)
+        ("bordeaux", 611, 22.2)
+    ]
+    assert average_temperature(efrance_measurements, "Bordeaux") == 25.9
+    assert average_temperature(efrance_measurements, "La Rochelle") == 15.0
+    assert average_temperature(efrance_measurements, "Les Sables-d'Olonne") == 18.2
 
 def test_average_temperature_regular_values():
     measurements = [
@@ -136,6 +180,18 @@ def test_average_temperature_regular_values():
 
     assert average_temperature(measurements, "Köln") == 15.0
 
+    sefrance_measurements = [
+        ("Toulouse", 792, 16.8)
+        ("Toulouse", 845, 18.6)
+        ("Carcassonne", 509, 23.2)
+        ("Perpignan", 600, 25.3)
+        ("Toulouse", 699, 16.2)
+        ("Perpignan", 843, 28.7)
+    ]
+
+    assert average_temperature(sefrance_measurements, "Toulouse") == 17.2
+    assert average_temperature(sefrance_measurements, "Carcassonne") == 23.2
+    assert average_temperature(sefrance_measurements, "Perpignan") == 27.0
 
 def test_hottest_measurement_with_unique_maximum():
     measurements = [

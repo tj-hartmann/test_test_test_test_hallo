@@ -37,3 +37,9 @@ Gibt alle Messungen zurueck der Temperaturen im gewuenschtem Bereich
 - uebergebene Liste nicht veraendern
 - lower > upper -> ValueError
 - Ergebnis ist eine Liste
+
+## average_temperature(measurements, city)
+Berechnet die mittlere Temperatur aller Messungen einer Stadt
+- Stadtname muss exakt sein; case sensitiv
+- keine Messung fuer die angegebene Stadt -> ValueError
+- Mittelwert ueber passende Messungen + Eingabedaten unveraendert
